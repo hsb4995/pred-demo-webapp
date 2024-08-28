@@ -1,0 +1,43 @@
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Price Predicition API</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">    
+  </head>
+  <body>
+    <!-- <h1>Price cost prediction</h1> -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Innovation Hack</a>
+      </div>
+    </nav>
+    <div class="login">
+      <h3>Shipping Price Prediction</h3>
+
+       <!-- Main Input For Receiving Query to our ML -->
+      <form action="{{ url_for('predict')}}"method="post">
+        <!-- <input type="text" name="org_pin" placeholder="Origin Pincode" required="required" /><br> -->
+        <!-- <input type="text" name="dst_pin" placeholder="Destination Pincode" required="required" /><br> -->
+        <input type="text" name="dst_state" placeholder="Destination State" required="required" /><br>
+        <input type="text" name="vol_wt" placeholder="Volumetric Weight" required="required" /><br>
+        <input type="text" name="obj_cost" placeholder="Cost" required="required" /><br>
+        <input type="text" name="org_state" placeholder="Origin State" required="required" /><br>
+        <!-- <input type="text" name="org_lat" placeholder="Volumetric Weight" required="required" /><br> -->
+        <input type="text" name="org_hasMetroCity" placeholder="Is Origin Metro City" required="required" /><br>
+        <input type="text" name="org_isSpecialDest" placeholder="Is Origin Special Dest" required="required" /><br>
+        <input type="text" name="org_po_del" placeholder="Is Origin PO del" required="required" /><br>
+        <input type="text" name="dst_hasMetroCity" placeholder="Is Destination Metro City" required="required" /><br>
+        <input type="text" name="dst_isSpecialDest" placeholder="Is Destination Special Dest" required="required" /><br>
+        <input type="text" name="dst_po_del" placeholder="Is Destination PO del" required="required" /><br>
+        <input type="text" name="distance" placeholder="Destination Pincode" required="required" /><br>
+        <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
+      </form>
+      <br>
+      <br>
+         
+    </div>
+    {{prediction_text}}
+  </body>
+</html>
