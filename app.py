@@ -20,7 +20,7 @@ app=Flask(__name__)
 
 # db = SQLAlchemy(app)
 
-model = pickle.load(open('../1stmodel.pkl','rb'))
+model = pickle.load(open('1stmodel.pkl','rb'))
 
 # class PincodeDirectory(db.Model):
 
