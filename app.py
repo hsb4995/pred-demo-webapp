@@ -20,7 +20,10 @@ app=Flask(__name__)
 
 # db = SQLAlchemy(app)
 
-model = pickle.load(open('1stmodel.pkl','rb'))
+from pathlib import Path
+THIS_FOLDER = Path(__file__).parent.resolve()
+my_file = THIS_FOLDER / "1stmodel.pkl"
+model = pickle.load(open(my_file,'rb'))
 
 # class PincodeDirectory(db.Model):
 
@@ -46,5 +49,5 @@ def predict():
     return render_template("index.html",prediction_text="Estimated shipping cost is {}".format(output))
 
 
-if __name__=="__main__":
-    app.run(debug=True)
+# if __name__=="__main__":
+#     app.run(debug=True)
