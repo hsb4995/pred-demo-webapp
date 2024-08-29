@@ -29,8 +29,11 @@ db = SQLAlchemy(app)
 
 from pathlib import Path
 THIS_FOLDER = Path(__file__).parent.resolve()
-my_file = THIS_FOLDER / "1stmodel.pkl"
-model = pickle.load(open(my_file,'rb'))
+pred_model_file = THIS_FOLDER / "models/1stmodel.pkl"
+st_le_file = THIS_FOLDER / "models/stateLE.pkl"
+
+pred_model = pickle.load(open(pred_model_file,'rb'))
+stateLabelEncoder = pickle.load(open(st_le_file,'rb'))
 
 class PincodeDirectory(db.Model):
 
@@ -94,9 +97,12 @@ def predict():
     print("Distance is "+ str(dst_km))
 
     # Finding state label encoded value for ML model
+    st = np.array([str(orgState)])
+    orgSt = stateLabelEncoder.transform(st)
+    st = np.array([str(dstState)])
+    dstSt = stateLabelEncoder.transform(st)
 
-
-    data = [0, vol_wt, obj_cost, 6, orgMetro, orgSD, orgPo, dstMetro, dstSD, dstPo, dst_km]
+    data = [dstSt, vol_wt, obj_cost, orgSt, orgMetro, orgSD, orgPo, dstMetro, dstSD, dstPo, dst_km]
     data=[float(x) for x in data]
     print(data)
     for x in request.form.values():
@@ -105,7 +111,7 @@ def predict():
     print(data)
 
     # Predict Shipment Price using model
-    output=np.exp(model.predict(data))[0]
+    output=np.exp(pred_model.predict(data))[0]
     return render_template("index.html",prediction_text=output)
 
 
