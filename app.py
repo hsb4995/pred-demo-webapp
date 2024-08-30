@@ -29,7 +29,7 @@ db = SQLAlchemy(app)
 
 from pathlib import Path
 THIS_FOLDER = Path(__file__).parent.resolve()
-pred_model_file = THIS_FOLDER / "models/1stmodel.pkl"
+pred_model_file = THIS_FOLDER / "models/xgbmodel_prem_pred.pkl"
 st_le_file = THIS_FOLDER / "models/stateLE.pkl"
 
 pred_model = pickle.load(open(pred_model_file,'rb'))
@@ -59,12 +59,24 @@ def reDirectHome():
 
 @app.route('/predict',methods=['POST'])
 def predict():
-    # data=[float(x) for x in request.form.values()]
+    
     dst_pin=request.form['dst_pin']
     org_pin=request.form['org_pin']
     obj_cost=request.form['obj_cost']
-    vol_wt=request.form['vol_wt']
+    dead_wt=request.form['dead_wt']
+    leng=request.form['leng']
+    wid=request.form['wid']
+    dep=request.form['dep']
 
+    vol_wt = (float(leng)*float(wid)*float(dep))/5
+    if float(dead_wt) > vol_wt:
+        vol_wt = dead_wt
+
+    # Checking pin codes are not same
+    if int(org_pin) == int(dst_pin):
+        output = "Error: Both pincodes are the same"
+        return render_template("index.html",prediction_text=output)
+    
     # For origin and dest, using pincode we will query to find all columns in directory table
     dst_db = db.session.get(PincodeDirectory,dst_pin)
     org_db = db.session.get(PincodeDirectory,org_pin)
@@ -72,10 +84,12 @@ def predict():
     output = ""
     # Null handling of pincode to ensure they are valid values 
     if dst_db is None:
-        output = "Error as Destination pincode is invalid"
+        output = "Error: Destination pincode is invalid"
+        return render_template("index.html",prediction_text=output)
 
     if org_db is None:
-        output = "Error as Origin pincode is invalid"
+        output = "Error: Origin pincode is invalid"
+        return render_template("index.html",prediction_text=output)
 
     # Fetching details of origin and destination
     orgState = org_db.stateName
@@ -102,7 +116,7 @@ def predict():
     st = np.array([str(dstState)])
     dstSt = stateLabelEncoder.transform(st)
 
-    data = [dstSt, vol_wt, obj_cost, orgSt, orgMetro, orgSD, orgPo, dstMetro, dstSD, dstPo, dst_km]
+    data = [org_pin, dst_pin, obj_cost, vol_wt, orgSt, orgMetro, orgSD, orgPo, dstSt, dstMetro, dstSD, dstPo, dst_km]
     data=[float(x) for x in data]
     print(data)
     for x in request.form.values():
@@ -112,6 +126,7 @@ def predict():
 
     # Predict Shipment Price using model
     output=np.exp(pred_model.predict(data))[0]
+    # output=""
     return render_template("index.html",prediction_text=output)
 
 
