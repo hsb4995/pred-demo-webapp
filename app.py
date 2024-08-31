@@ -126,9 +126,9 @@ def predict():
     print(data)
 
     # Predict Shipment Price using model
-    output=np.exp(pred_model.predict(data))[0]
+    output=str(np.exp(pred_model.predict(data))[0])
     # output=""
-    return render_template("index.html",prediction_text=output)
+    return output
 
 @app.route('/getPincode/<pin>',methods=['GET'])
 def getPincodeData(pin):

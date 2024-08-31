@@ -31,6 +31,14 @@
   visibility: hidden;
 }
 
+#hdn-pred {
+  visibility: hidden;
+}
+
+#map {
+  visibility: hidden;
+}
+
 .bd-placeholder-img {
   font-size: 1.125rem;
   text-anchor: middle;

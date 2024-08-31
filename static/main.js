@@ -127,8 +127,12 @@ function updateStateAnalytics(obj, state, isMetro, isSD) {
         if(analyticsCls[i].style.visibility == "visible"){visCount=1;}
     }
     analyticsLst = document.getElementById("hdn-lst")
+    map2 = document.getElementById("map")
+    pred = document.getElementById("hdn-pred")
     if(visCount > 0) {
         analyticsLst.style.visibility = "visible"
+        map2.style.visibility = "visible"
+        pred.style.visibility = "visible"
     }
 
 }
@@ -188,3 +192,29 @@ function isValidWeight(val) {
     }
     return true;
 }
+
+function getPred(obj) {
+    console.log("Calling backend api for getting prediction")
+    console.log(obj.serialize)
+    $.ajax({
+        url: "/predict",
+        type: 'POST',
+        data: $(obj).serialize(), 
+        dataType: 'json', // added data type
+        success: function(res) {
+            console.log(res);
+            predEle = document.getElementById("pred-out");
+            predEle.textContent = res
+        },
+        error: function() {
+            alert("Invalid data entered")
+        }
+    });
+}
+
+$( document ).ready(function() {
+    $("form").submit(function(e) {
+        e.preventDefault(); // prevent page refresh
+        getPred(this)
+    });
+});
