@@ -5,6 +5,7 @@ from flask import Flask,request,app,jsonify,url_for,render_template
 from flask_sqlalchemy import SQLAlchemy
 import mysql.connector
 from math import radians, cos, sin, asin, sqrt
+import json
 
 app=Flask(__name__)
 app.config["DEBUG"] = True
@@ -59,7 +60,7 @@ def reDirectHome():
 
 @app.route('/predict',methods=['POST'])
 def predict():
-    
+
     dst_pin=request.form['dst_pin']
     org_pin=request.form['org_pin']
     obj_cost=request.form['obj_cost']
@@ -129,6 +130,22 @@ def predict():
     # output=""
     return render_template("index.html",prediction_text=output)
 
+@app.route('/getPincode/<pin>',methods=['GET'])
+def getPincodeData(pin):
+    print("looking for"+ str(pin))
+    pin_db = db.session.get(PincodeDirectory,pin)
+    if pin_db is None:
+        output = "Error: Origin pincode is invalid"
+        return render_template("{\"error\":\"Invalid pincode\"}")
+
+    state = pin_db.stateName
+    latV = pin_db.latV
+    longV = pin_db.longV
+    isMetro = pin_db.isMetro
+    isSD = pin_db.isSpecDest
+    resp = {'state':state, 'latV':latV, 'longV':longV, 'isMetro': isMetro, 'isSD': isSD}
+    print(json.dumps(resp))
+    return json.dumps(resp)
 
 def haversine(lon1, lat1, lon2, lat2):
     """

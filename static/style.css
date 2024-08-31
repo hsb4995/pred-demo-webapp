@@ -1,12 +1,12 @@
 
 
 .team-header{
-    color: white;
-  }
+  color: white;
+}
   
-  .container {
-    max-width: 960px;
-  }
+.container {
+  max-width: 960px;
+}
 
 .pred-form{
   border-right:1px solid #f0eded  ;
@@ -21,6 +21,14 @@
   -moz-box-shadow: 0 0 3px #ccc;
   -webkit-box-shadow: 0 0 3px #ccc;
   box-shadow: 0 0 3px #ccc;
+}
+
+.hdn-cls {
+  visibility: hidden;
+}
+
+#hdn-lst {
+  visibility: hidden;
 }
 
 .bd-placeholder-img {

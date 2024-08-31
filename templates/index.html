@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Price Predicition API</title>
+    <title>Price Predicition AI Interface</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">  
     <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">  
     <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap.min.css') }}">
@@ -15,6 +15,10 @@
      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
+     <script
+     src="https://code.jquery.com/jquery-3.7.1.min.js"
+     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+     crossorigin="anonymous"></script>
   </head>
   <body>
     <!-- <h1>Price cost prediction</h1> -->
@@ -27,7 +31,7 @@
 
     <div class="container">
       <main>
-        <div class="py-5 text-center">
+        <div class="py-4 text-center">
           <h2>PriceAI</h2>
           <p class="lead">An AI solution to help you predict cost a shipper would pay for logistics</p>
         </div>
@@ -48,50 +52,51 @@
             <h4 class="d-flex justify-content-between align-items-center mb-4">
               <span class="text-primary">Analytics</span>
             </h4>
-            <ul class="list-group mb-3">
+            <ul class="list-group mb-3" id="hdn-lst">
               <li class="list-group-item d-flex justify-content-between lh-sm">
                 <div>
-                  <h6 class="my-0 org_cls">State:</h6>
-                  <small class="text-body-secondary org_cls">Comes in Metropolitan region</small>
+                  <h6 id="org_pin_title" class="my-0 org_cls hdn-cls">State:</h6>
+                  <small id="org_pin_info" class="text-body-secondary org_cls"></small>
                 </div>
-                <span class="text-body-secondary org_cls"> ABC</span>
+                <span id="org_pin_st" class="text-body-secondary org_cls"></span>
               </li>
               <li class="list-group-item d-flex justify-content-between lh-sm">
                 <div>
-                  <h6 class="my-0">State:</h6>
-                  <small class="text-body-secondary">Comes in Special region</small>
+                  <h6 id="dst_pin_title" class="my-0 hdn-cls">State:</h6>
+                  <small id="dst_pin_info" class="text-body-secondary"></small>
                 </div>
-                <span class="text-body-secondary"> BCD</span>
+                <span id="dst_pin_st" class="text-body-secondary"></span>
               </li>
               <li class="list-group-item d-flex justify-content-between lh-sm">
                 <div>
-                  <h6 class="my-0">Distance between regions: </h6>
-                  <small class="text-body-secondary">Distance is major factor while calculating cost</small>
+                  <h6 id="dst_v1" class="my-0 hdn-cls">Distance between regions: </h6>
+                  <small id="dst_v2" class="text-body-secondary hdn-cls">Distance is major factor while calculating cost</small>
                 </div>
-                <span class="text-body-secondary">29494km</span>
+                <span id="dst_v3" class="text-body-secondary hdn-cls"></span>
               </li>
               <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
                 <div>
-                  <small class="my-0 text-body-secondary">Cost of the object is important and has direct impact in insurance cost</small>
+                  <small id= "cost_info" class="my-0 text-body-secondary hdn-cls">Cost of the object is important and has direct impact in insurance cost</small>
                 </div>
               </li>
               <li class="list-group-item d-flex justify-content-between lh-sm">
                 <div>
-                  <small class="my-0 text-body-secondary"> Weight of object (dead weight) and Volumetric weight (using dimensions) are important factors </small>
+                  <small id= "wt_info" class="my-0 text-body-secondary hdn-cls">Weight of object (dead weight) and Volumetric weight (using dimensions) are important factors </small>
                 </div>
               </li>
             </ul>
             <div id="map"></div>
     
             <form class="card p-2">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Promo code">
-                <button type="submit" class="btn btn-secondary">Redeem</button>
+              <div class="row">
+              <div class="col-6">
+                <h5> Prediction:   </h5>
               </div>
-            </form>
-            <div>
-              {{prediction_text}}
+              <div class="col-6">
+                {{prediction_text}}
+              </div>
             </div>
+            </form>
           </div>
           <div class="col-md-7 col-lg-8 pred-form">
             <h4 class="mb-3">Parameters: </h4>
@@ -110,7 +115,7 @@
                 <div class="col-sm-12">
                   <div class="col-sm-4">
                     <label for="dst_pin" class="form-label">Destination Pincode</label>
-                    <input type="text" class="form-control" id="dst_pin" pattern="[0-9]{6}" name="dst_pin" placeholder="" value="" required>
+                    <input type="text" class="form-control" id="dst_pin" pattern="[0-9]{6}" name="dst_pin" placeholder="" onchange="getAnalytics(this)" value="" required>
                     <div class="invalid-feedback">
                       Valid Indian 6 digit pincode is required.
                     </div>
@@ -121,7 +126,7 @@
                     <label for="obj_cost" class="form-label">Cost of object</label>
                     <div class="input-group has-validation">
                       <span class="input-group-text">₹</span>
-                      <input type="text" class="form-control" id="obj_cost" name="obj_cost" placeholder="" required>
+                      <input type="text" class="form-control" id="obj_cost" name="obj_cost" placeholder="" onchange="getAnalytics(this)" required>
                       <div class="invalid-feedback">
                         Object cost is required.
                       </div>
@@ -137,7 +142,7 @@
     
                 <div class="col-12">
                   <label for="dweight" class="form-label">Dead weight <span class="text-body-secondary">(grams)</span></label>
-                  <input type="text" class="form-control" id="dead_wt" name="dead_wt" placeholder="10-30000gm">
+                  <input type="text" class="form-control" id="dead_wt" name="dead_wt" placeholder="10-30000gm" onchange="getAnalytics(this)" required>
                   <div class="invalid-feedback">
                     Please enter a weight from 10 gram to 30000
                   </div>
