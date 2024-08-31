@@ -30,7 +30,7 @@ db = SQLAlchemy(app)
 
 from pathlib import Path
 THIS_FOLDER = Path(__file__).parent.resolve()
-pred_model_file = THIS_FOLDER / "models/xgbmodel_prem_pred.pkl"
+pred_model_file = THIS_FOLDER / "models/min_price_pred_cat.pkl"
 st_le_file = THIS_FOLDER / "models/stateLE.pkl"
 
 pred_model = pickle.load(open(pred_model_file,'rb'))
@@ -117,7 +117,7 @@ def predict():
     st = np.array([str(dstState)])
     dstSt = stateLabelEncoder.transform(st)
 
-    data = [org_pin, dst_pin, obj_cost, vol_wt, orgSt, orgMetro, orgSD, orgPo, dstSt, dstMetro, dstSD, dstPo, dst_km]
+    data = [org_pin, dst_pin, obj_cost, orgSt, orgMetro, orgSD, orgPo, dstSt, dstMetro, dstSD, dstPo, vol_wt,dst_km]
     data=[float(x) for x in data]
     print(data)
     for x in request.form.values():
@@ -126,7 +126,7 @@ def predict():
     print(data)
 
     # Predict Shipment Price using model
-    output=str(np.exp(pred_model.predict(data))[0])
+    output=str(np.exp(pred_model.predict(data))[0]/2)
     # output=""
     return output
 
