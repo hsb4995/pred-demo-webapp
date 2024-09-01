@@ -4,7 +4,7 @@
 An AI model which can predict pricing for shipment considering quantitative data variables and indicators using real world datasets.
 
 This is a sub-directory for prototype which is hosted on the cloud with pickled models.
-The complete code-base containing datasets and jupyter can be found here - .
+The complete code-base containing datasets and jupyter can be found here - https://github.com/hsb4995/PriceAIEDA
 
 
 
