@@ -17,6 +17,8 @@ Demo is hosted: https://hs95.pythonanywhere.com/
 
 Feel free to test, the model loaded predict min cost for domestic shipping of parcel between 2 pincodes in India along with other parameters.
 We support all 19300 pincodes of India.
+The demo is currently using a lighter model of gradient boosting with less parameters to be hosted online. 
+There are other available models pickled in models directory.
 
 
 ## Run Locally
@@ -33,16 +35,16 @@ Go to the project directory
   cd pred-demo-webapp
 ```
 
-Install libraries mentioned in requirements.txt
+Install libraries mentioned in requirements.txt it should cover all
 
 ```bash
-  pip install -r requirements.txt
+  pip install -r requirements-pip-freeze.txt
 ```
 
-In case you are facing issues with any libraries, also install dep in pip freeeze 
+In case you are facing issues with any libraries, kindly install dependencies manually
 
 ```bash
-  pip install -r pip_freeze.txt
+  pip install {missing_dep}
 ```
 
 Run Mysql server
