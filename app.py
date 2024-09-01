@@ -30,12 +30,12 @@ db = SQLAlchemy(app)
 
 from pathlib import Path
 THIS_FOLDER = Path(__file__).parent.resolve()
-# pred_model_file = THIS_FOLDER / "models/min_price_pred_lgb_final.pkl"
+pred_model_file = THIS_FOLDER / "models/min_price_pred_grad_final.pkl"
 st_le_file = THIS_FOLDER / "models/stateLE.pkl"
 max_pred_model_file = THIS_FOLDER / "models/xgbmodel_prem_pred.pkl"
 
 
-# pred_model = pickle.load(open(pred_model_file,'rb'))
+pred_model = pickle.load(open(pred_model_file,'rb'))
 stateLabelEncoder = pickle.load(open(st_le_file,'rb'))
 max_pred_model = pickle.load(open(max_pred_model_file,'rb'))
 
@@ -133,12 +133,12 @@ def predict():
     print(data2)
 
     #Predict Shipment Price using model and round to 2 digit
-    # output="{:0.2f}".format(np.exp(pred_model.predict(data))[0]/2)
-    # output=str(output)
+    output="{:0.2f}".format(np.exp(pred_model.predict(data))[0]/2)
+    output=str(output)
 
     output2="{:0.2f}".format(np.exp(max_pred_model.predict(data2))[0]/2)
     output2=str(output2)
-    resp = {'cheap':'output', 'fast':output2}
+    resp = {'cheap':output, 'fast':output2}
     print(json.dumps(resp))
     return json.dumps(resp)
     # return output
