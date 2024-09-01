@@ -21,6 +21,14 @@ The demo is currently using a lighter model of gradient boosting with less param
 There are other available models pickled in models directory.
 
 
+
+
+
+
+## Screenshot
+![demoImg](https://github.com/user-attachments/assets/a56daf68-02ce-44c5-a3e2-c94d76075d56)
+
+
 ## Run Locally
 
 Clone the project
