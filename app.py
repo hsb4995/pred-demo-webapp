@@ -30,7 +30,7 @@ db = SQLAlchemy(app)
 
 from pathlib import Path
 THIS_FOLDER = Path(__file__).parent.resolve()
-pred_model_file = THIS_FOLDER / "models/min_price_pred_cat_1.pkl"
+pred_model_file = THIS_FOLDER / "models/min_price_pred_xgb.pkl"
 st_le_file = THIS_FOLDER / "models/stateLE.pkl"
 max_pred_model_file = THIS_FOLDER / "models/xgbmodel_prem_pred_4.pkl"
 
