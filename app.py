@@ -30,11 +30,15 @@ db = SQLAlchemy(app)
 
 from pathlib import Path
 THIS_FOLDER = Path(__file__).parent.resolve()
-pred_model_file = THIS_FOLDER / "models/min_price_pred_cat.pkl"
+pred_model_file = THIS_FOLDER / "models/min_price_pred_cat_1.pkl"
 st_le_file = THIS_FOLDER / "models/stateLE.pkl"
+max_pred_model_file = THIS_FOLDER / "models/xgbmodel_prem_pred_4.pkl"
+
 
 pred_model = pickle.load(open(pred_model_file,'rb'))
 stateLabelEncoder = pickle.load(open(st_le_file,'rb'))
+max_pred_model = pickle.load(open(max_pred_model_file,'rb'))
+
 
 class PincodeDirectory(db.Model):
 
@@ -118,17 +122,26 @@ def predict():
     dstSt = stateLabelEncoder.transform(st)
 
     data = [org_pin, dst_pin, obj_cost, orgSt, orgMetro, orgSD, orgPo, dstSt, dstMetro, dstSD, dstPo, vol_wt,dst_km]
+    data2 = [org_pin, dst_pin, obj_cost, vol_wt, orgSt, orgMetro, orgSD, orgPo, dstSt, dstMetro, dstSD, dstPo,dst_km]
     data=[float(x) for x in data]
+    data2=[float(x) for x in data2]
     print(data)
     for x in request.form.values():
     	print(x)
-    data =np.array(data).reshape(1,-1)
-    print(data)
+    data = np.array(data).reshape(1,-1)
+    data2 = np.array(data2).reshape(1,-1)
+    print(data2)
 
-    # Predict Shipment Price using model
-    output=str(np.exp(pred_model.predict(data))[0]/2)
-    # output=""
-    return output
+    # Predict Shipment Price using model and round to 2 digit
+    output="{:0.2f}".format(np.exp(pred_model.predict(data))[0]/2)
+    output=str(output)
+
+    output2="{:0.2f}".format(np.exp(max_pred_model.predict(data2))[0]/2)
+    output2=str(output2)
+    resp = {'cheap':output, 'fast':output2}
+    print(json.dumps(resp))
+    return json.dumps(resp)
+    # return output
 
 @app.route('/getPincode/<pin>',methods=['GET'])
 def getPincodeData(pin):

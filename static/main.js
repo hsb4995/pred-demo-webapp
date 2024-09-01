@@ -204,7 +204,7 @@ function getPred(obj) {
         success: function(res) {
             console.log(res);
             predEle = document.getElementById("pred-out");
-            predEle.textContent = res
+            predEle.textContent = "min:" + res.cheap + "    fast:" + res.fast
         },
         error: function() {
             alert("Invalid data entered")
