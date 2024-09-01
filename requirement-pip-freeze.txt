@@ -369,7 +369,7 @@ whatthepatch @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/a
 wrapt @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_37a5af2b-c563-4ec6-9258-35772bae6a6agcs4j3hx/croots/recipe/wrapt_1657814428573/work
 wurlitzer @ file:///Users/ktietz/ci_310/wurlitzer_1643969655374/work
 xarray @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_59mtp9c77n/croot/xarray_1668776594358/work
-xgboost @ file:///Users/runner/miniforge3/conda-bld/xgboost-split_1721975033452/work/python-package
+xgboost==1.6.1
 xlwings @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_c6m0e08tm3/croot/xlwings_1677024168480/work
 xyzservices==2024.6.0
 yapf @ file:///tmp/build/80754af9/yapf_1615749224965/work
